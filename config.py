@@ -12,7 +12,7 @@ anchor_free_mode = True #whether to use anchor free method or not
 num_gpus    = 4
 batch_size = 12
 
-lr         = 1e-4
+lr         = 1e-3
 optim      = "adamw"
 num_epochs = 500
 num_workers   = 0
@@ -50,8 +50,8 @@ obj_list = get_objects(dataset_name)
 '''	test setting '''
 ##############################################
 force_input_size = None
-img_path = 'demo_jpg/1.jpg'
-weight_path = 'weights/voc/efficientdet-d0_7_6416_best_loss.pth'
+img_path = 'demo_jpg/test.jpg'
+weight_path = 'weights/voc/efficientdet-d0_9_8020_best_loss.pth'
 threshold = 0.3
 iou_threshold = 0.2
 ################################################
