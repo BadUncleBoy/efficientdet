@@ -6,7 +6,6 @@ train_set   = "train"
 val_set     = "val"
 
 anchor_free_mode = True #whether to use anchor free method or not
-
 ''' training setting '''
 ####################################################
 num_gpus    = 4
