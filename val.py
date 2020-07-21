@@ -34,15 +34,18 @@ def coco_eval(model):
     data_path = config.data_path
     dataset_name = config.dataset_name
     VAL_GT = '{0}/{1}/annotations/instances_{2}.json'.format(data_path, dataset_name, SET_NAME)
-    VAL_IMGS = '{0}/{1}/{2}/'.format(data_path, dataset_name, SET_NAME)
+    VAL_IMGS_DIR = '{0}/{1}/{2}/'.format(data_path, dataset_name, SET_NAME)
     MAX_IMAGES = 10000
     coco_gt = COCO(VAL_GT)
     image_ids = coco_gt.getImgIds()[:MAX_IMAGES]
+    input_size = input_sizes[config.compound_coef] if config.force_input_size is None else config.force_input_size
     
-    if not os.path.exists('{0}_bbox_results.json'.format(SET_NAME)):
-        evaluate_coco(VAL_IMGS, SET_NAME, image_ids, coco_gt, model, input_sizes[config.compound_coef], config)
+    results_json_path = ".{0}_results.json".format(SET_NAME)
+    evaluate_coco(VAL_IMGS_DIR, results_json_path, image_ids, coco_gt, model, input_size, config)
 
-    _eval_coco(coco_gt, image_ids, '{0}_bbox_results.json'.format(SET_NAME))
+    _eval_coco(coco_gt, image_ids, results_json_path)
+    if os.path.exists(results_json_path):
+        os.remove(results_json_path)
 
 def voc_eval(model):
     val_data_path = config.data_path + "/" + config.dataset_name + "/val.txt"

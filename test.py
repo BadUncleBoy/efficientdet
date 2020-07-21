@@ -61,6 +61,7 @@ if use_float16:
     model = model.half()
 
 with torch.no_grad():
+    print("start predicating...")
     features, regression, classification, anchors = model(x)
 
     regressBoxes = BBoxTransform()
@@ -89,9 +90,11 @@ def display(preds, imgs, imshow=True, imwrite=False):
             cv2.waitKey(0)
 
         if imwrite:
-            cv2.imwrite('demo_jpg/{0}_infer.jpg'.format(config.dataset_name), imgs[i])
+            predicated_path = 'demo_jpg/{0}_infer.jpg'.format(config.dataset_name)
+            cv2.imwrite(predicated_path, imgs[i])
+            print("write predicated result in:{0}".format(predicated_path))
 
 
 out = invert_affine(framed_metas, out)
-print(out)
+print("predicating finished")
 display(out, ori_imgs, imshow=False, imwrite=True)

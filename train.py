@@ -25,7 +25,6 @@ from utils.sync_batchnorm import patch_replication_callback
 from utils.utils import replace_w_sync_bn, CustomDataParallel, init_weights
 import config
 
-
 class ModelWithLoss(nn.Module):
     def __init__(self, model, debug=False):
         super().__init__()

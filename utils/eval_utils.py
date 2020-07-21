@@ -185,7 +185,7 @@ def evaluate_voc(gt_dict, img_paths, model, max_size, config):
         voc_certs.append([prec, rec, ap])
     return voc_certs
 
-def evaluate_coco(img_path, set_name, image_ids, coco, model, max_size, config):
+def evaluate_coco(img_path, json_path, image_ids, coco, model, max_size, config):
     results = []
 
     regressBoxes = BBoxTransform()
@@ -251,10 +251,10 @@ def evaluate_coco(img_path, set_name, image_ids, coco, model, max_size, config):
         raise Exception('the model does not provide any valid output, check model architecture and the data input')
 
     # write output
-    filepath = '{0}_bbox_results.json'.format(set_name)
-    if os.path.exists(filepath):
-        os.remove(filepath)
-    json.dump(results, open(filepath, 'w'), indent=4)
+    
+    if os.path.exists(json_path):
+        os.remove(json_path)
+    json.dump(results, open(json_path, 'w'), indent=4)
 
 
 def _eval_coco(coco_gt, image_ids, pred_json_path):

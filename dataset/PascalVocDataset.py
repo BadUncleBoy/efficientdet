@@ -87,7 +87,7 @@ class PascalVocDataset(Dataset):
             
             for numth in range(annot.shape[0]):
 
-                box_down = annot[numth, :-1] * scale // stride
+                box_down = annot[numth, :-1] * scale / stride
                 x_min = int(box_down[0]) if box_down[0] < (int(box_down[0]) + 0.5) else int(box_down[0]) + 1
                 x_max = int(box_down[2]) if box_down[2] > (int(box_down[2]) + 0.5) else int(box_down[2]) - 1
                 y_min = int(box_down[1]) if box_down[1] < (int(box_down[1]) + 0.5) else int(box_down[1]) + 1
@@ -98,8 +98,8 @@ class PascalVocDataset(Dataset):
                 y_max = y_min if y_min == (y_max + 1) else y_max
 
                 r_distance = annot[numth, 2] / self.img_size
-                for axis_1 in range(x_min, x_max+1):
-                    for axis_0 in range(y_min, y_max+1):
+                for axis_1 in range(x_min, min(x_max+1, self.img_size//stride)):
+                    for axis_0 in range(y_min, min(y_max+1, self.img_size//stride)):
                         exist_r_distance = y_true_i[axis_0, axis_1, 2]
                         if (r_distance < exist_r_distance):
                             # we need to resize the gt bbox in the Resizer class
