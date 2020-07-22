@@ -93,13 +93,17 @@ class PascalVocDataset(Dataset):
                 y_min = int(box_down[1]) if box_down[1] < (int(box_down[1]) + 0.5) else int(box_down[1]) + 1
                 y_max = int(box_down[3]) if box_down[3] > (int(box_down[3]) + 0.5) else int(box_down[3]) - 1
                 
+                # special contition if the object falls in the rightest gird's right part area
+                if x_min == (self.img_size // stride) or y_min == (self.img_size // stride):
+                    continue 
+                
                 # make sure at least one grid contains this object
                 x_max = x_min if x_min == (x_max + 1) else x_max
                 y_max = y_min if y_min == (y_max + 1) else y_max
 
                 r_distance = annot[numth, 2] / self.img_size
-                for axis_1 in range(x_min, min(x_max+1, self.img_size//stride)):
-                    for axis_0 in range(y_min, min(y_max+1, self.img_size//stride)):
+                for axis_1 in range(x_min, x_max+1):
+                    for axis_0 in range(y_min, y_max+1):
                         exist_r_distance = y_true_i[axis_0, axis_1, 2]
                         if (r_distance < exist_r_distance):
                             # we need to resize the gt bbox in the Resizer class

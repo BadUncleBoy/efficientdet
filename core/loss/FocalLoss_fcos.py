@@ -48,14 +48,18 @@ class FocalLoss_fcos(nn.Module):
                 
                 classification_losses.append(cls_loss.sum() / cls_loss.shape[0])
                 
-                regression_diff = torch.abs(anno_bbox[effective_indices] - regression[effective_indices])
-                regression_loss = torch.where(
-                        torch.le(regression_diff, 1.0 / 9.0),
-                        0.5 * 9.0 * torch.pow(regression_diff, 2),
-                        regression_diff - 0.5 / 9.0
-                    )
+                regression_diff_true = torch.abs(anno_bbox[effective_indices] - regression[effective_indices])
+                ineffective_indices = effective_indices = annotation[:,4] != 1. 
+                regression_diff_false = torch.abs(regression[ineffective_indices] - 0)
                 
-                regression_losses.append(regression_loss.mean())
+                beta = 0.7
+                # regression_loss = torch.where(
+                #         torch.le(regression_diff_true, 1.0 / 9.0),
+                #         0.5 * 9.0 * torch.pow(regression_diff_true, 2),
+                #         regression_diff_true - 0.5 / 9.0
+                #     )
+                
+                regression_losses.append(beta * regression_diff_true.mean() + (1 - beta) * regression_diff_false.mean())
             
             # img doesnot have object
             else:

@@ -66,7 +66,15 @@ with torch.no_grad():
 
     regressBoxes = BBoxTransform()
     clipBoxes = ClipBoxes()
-
+    # view
+    # start =0
+    # for each in [8, 16, 32,64,128]:
+    #     ll = (input_size//each) **2
+    #     ss=classification[:,start:start+ll,:]
+    #     tt
+    #     start += ll
+    #     n=torch.argmax(ss,dim=-1)
+    #     print(np.array(n.view(input_size//each, input_size//each).cpu()))
     out = postprocess(x,
                       anchors, regression, classification,
                       regressBoxes, clipBoxes,
@@ -97,4 +105,5 @@ def display(preds, imgs, imshow=True, imwrite=False):
 
 out = invert_affine(framed_metas, out)
 print("predicating finished")
+print(out)
 display(out, ori_imgs, imshow=False, imwrite=True)

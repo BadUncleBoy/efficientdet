@@ -119,7 +119,7 @@ def train():
     if config.head_only:
         def freeze_backbone(m):
             classname = m.__class__.__name__
-            for ntl in ['EfficientNet', 'BiFPN']:
+            for ntl in ['EfficientNet']:
                 if ntl in classname:
                     for param in m.parameters():
                         param.requires_grad = False
