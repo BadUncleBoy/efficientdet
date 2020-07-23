@@ -5,7 +5,7 @@ compound_coef = 0
 train_set   = "train"
 val_set     = "val"
 
-anchor_free_mode = True #whether to use anchor free method or not
+anchor_free_mode = False #whether to use anchor free method or not
 ''' training setting '''
 ####################################################
 num_gpus    = 4
@@ -48,10 +48,10 @@ obj_list = get_objects(dataset_name)
 
 '''	test setting '''
 ##############################################
-force_input_size = None
-img_path = 'demo_jpg/2.jpg'
-weight_path = 'weights/voc/efficientdet-d0_3_3208_best_loss.pth'
-threshold = 0.5
+force_input_size = 1024
+img_path = 'demo_jpg/img.png'
+weight_path = '/data/zy/Efficient_pytorch/weights/voc/efficientdet-d0_127_102000.pth'
+threshold = 0.2
 iou_threshold = 0.2
 ################################################
 
