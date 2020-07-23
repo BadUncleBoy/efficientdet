@@ -49,10 +49,10 @@ obj_list = get_objects(dataset_name)
 
 '''	test setting '''
 ##############################################
-# force_input_size = 1536
-img_path = 'demo_jpg/img.png'
-weight_path = 'weights/kdxf/efficientdet-d0_24_6000.pth'
-threshold = 0.3
+force_input_size = None
+img_path = 'demo_jpg/5.jpg'
+weight_path = 'weights/kdxf/efficientdet-d0_2_744_best_loss.pth'
+threshold = 0.1
 iou_threshold = 0.2
 ################################################
 

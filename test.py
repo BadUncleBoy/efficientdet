@@ -106,5 +106,5 @@ def display(preds, imgs, imshow=True, imwrite=False):
 
 out = invert_affine(framed_metas, out)
 print("predicating finished")
-# print(out)
+print(out)
 display(out, ori_imgs, imshow=False, imwrite=True)
