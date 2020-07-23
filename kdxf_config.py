@@ -49,9 +49,9 @@ obj_list = get_objects(dataset_name)
 
 '''	test setting '''
 ##############################################
-force_input_size = 1536
+# force_input_size = 1536
 img_path = 'demo_jpg/img.png'
-weight_path = '/data/zy/Efficient_pytorch/weights/cocods/efficientdet-d0_13_136000.pth'
+weight_path = 'weights/kdxf/efficientdet-d0_24_6000.pth'
 threshold = 0.3
 iou_threshold = 0.2
 ################################################
@@ -59,7 +59,7 @@ iou_threshold = 0.2
 
 ''' eval setting'''
 ####################################################
-eval_weight_path = '/data/zy/Efficient_pytorch/weights/cocods/efficientdet-d0_21_210000.pth'
+eval_weight_path = 'weights/kdxf/efficientdet-d0_24_6000.pth'
 eval_nms_threshold   = 0.5
 eval_use_cuda = True
 eval_gpu = 0

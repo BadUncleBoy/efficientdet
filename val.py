@@ -13,7 +13,7 @@ from core.EfficientDet import EfficientDetBackbone
 from utils.utils import parse_gt_rec
 from utils.eval_utils import evaluate_coco, evaluate_voc, _eval_coco
 
-
+os.environ["CUDA_VISIBLE_DEVICES"] = '5'
 compound_coef = config.compound_coef
 use_cuda = config.eval_use_cuda
 gpu = config.eval_gpu
