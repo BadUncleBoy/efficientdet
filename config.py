@@ -50,16 +50,16 @@ obj_list = get_objects(dataset_name)
 '''	test setting '''
 ##############################################
 force_input_size = None
-img_path = 'demo_jpg/5.jpg'
-weight_path = 'weights/kdxf/efficientdet-d0_2_744_best_loss.pth'
-threshold = 0.1
+img_path = 'demo_jpg/img.png'
+weight_path = 'weights/kdxf/efficientdet-d0_24_6000.pth'
+threshold = 0.3
 iou_threshold = 0.2
 ################################################
 
 
 ''' eval setting'''
 ####################################################
-eval_weight_path = 'weights/kdxf/efficientdet-d0_24_6000.pth'
+eval_weight_path = 'weights/kdxf/efficientdet-d0_32_8000.pth'
 eval_nms_threshold   = 0.5
 eval_use_cuda = True
 eval_gpu = 0
