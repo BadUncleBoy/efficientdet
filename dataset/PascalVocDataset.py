@@ -8,7 +8,7 @@ import cv2
 class PascalVocDataset(Dataset):
     def __init__(self, root_dir, set, img_size, anchor_free_mode=False, transform=None):
 
-        # self.root_dir = root_dir
+        self.root_dir = root_dir
         self.transform = transform
         self.img_size  = img_size
         self.anchor_free_mode = anchor_free_mode
@@ -30,6 +30,7 @@ class PascalVocDataset(Dataset):
         '''
         if 'str' not in str(type(line)):
             line = line.decode()
+        # print(line)
         s = line.strip().split(' ')
         assert len(s) > 8, 'Annotation error! Please check your annotation file. Make sure there is at least one target object in each image.'
         line_idx = int(s[0])
@@ -61,6 +62,7 @@ class PascalVocDataset(Dataset):
 
     def __getitem__(self, idx):
         pic_path, annot, img_width, img_height = self.parse_line(self.lines[idx])
+        pic_path = os.path.join(self.root_dir, pic_path)
         # print(annot)
         if(self.anchor_free_mode):
             annot = self.gen_anchor_free_annotation(annot, img_height, img_width)

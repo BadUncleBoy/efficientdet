@@ -90,6 +90,7 @@ def display(preds, imgs, imshow=True, imwrite=False):
             x1, y1, x2, y2 = preds[i]['rois'][j].astype(np.int)
             obj = obj_list[preds[i]['class_ids'][j]]
             score = float(preds[i]['scores'][j])
+            print(x1,y1,x2,y2,obj,score)
             plot_one_box(imgs[i], [x1, y1, x2, y2], label=obj,score=score,color=color_list[get_index_label(obj, obj_list)])
 
 
@@ -105,5 +106,5 @@ def display(preds, imgs, imshow=True, imwrite=False):
 
 out = invert_affine(framed_metas, out)
 print("predicating finished")
-print(out)
+# print(out)
 display(out, ori_imgs, imshow=False, imwrite=True)

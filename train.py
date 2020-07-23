@@ -72,10 +72,10 @@ def train():
                   'num_workers': config.num_workers}
 
     input_sizes = [512, 640, 768, 896, 1024, 1280, 1280, 1536]
-    if(config.dataset_name == "voc"):
-        DS = PascalVocDataset
-    else:
+    if("coco" in config.dataset_name):
         DS = CocoDataset
+    else:
+        DS = PascalVocDataset
     training_set = DS(root_dir=os.path.join(config.data_path, config.dataset_name), set=config.train_set,
                                img_size=input_sizes[config.compound_coef], anchor_free_mode=config.anchor_free_mode,
                                transform=transforms.Compose([Normalizer(mean=config.mean, std=config.std),

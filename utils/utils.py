@@ -22,11 +22,12 @@ def get_objects(ds_name):
     ols = []
     if ds_name == "voc":
         ds_path = "names/voc_names.txt"
+    elif ds_name == "kdxf":
+        ds_path = "names/kdxf_names.txt"
     else:
         ds_path = "names/coco_names.txt"
     with open(ds_path, "r") as f:
-        for each in f.readlines():
-            ols.append(each.strip())
+        ols = [each.strip() for each in f.readlines()]
     return ols
 
 

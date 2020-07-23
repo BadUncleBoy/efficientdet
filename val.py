@@ -49,7 +49,8 @@ def coco_eval(model):
 
 def voc_eval(model):
     val_data_path = config.data_path + "/" + config.dataset_name + "/val.txt"
-    gt_dict, img_pathes = parse_gt_rec(val_data_path)
+    gt_dict, img_pathes_ = parse_gt_rec(val_data_path)
+    img_pathes = [os.path.join(config.data_path, config.dataset_name, each) for each in img_pathes_]
     
     results = evaluate_voc(gt_dict, img_pathes, model, input_sizes[config.compound_coef], config)
     for i, each in enumerate(results):
@@ -69,7 +70,8 @@ if __name__ == '__main__':
         if use_float16:
             model.half()
     
-    if(config.dataset_name == "voc"):
-        voc_eval(model)
-    else:
+    if("coco" in config.dataset_name):
         coco_eval(model)
+    else:
+        
+        voc_eval(model)

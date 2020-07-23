@@ -59,10 +59,10 @@ iou_threshold = 0.2
 
 ''' eval setting'''
 ####################################################
-eval_weight_path = 'weights/kdxf/efficientdet-d0_4_1000.pth'
+eval_weight_path = '/data/zy/Efficient_pytorch/weights/cocods/efficientdet-d0_21_210000.pth'
 eval_nms_threshold   = 0.5
 eval_use_cuda = True
 eval_gpu = 0
 eval_use_float16 = False
-eval_threshold = 0.2
+eval_threshold = 0.02
 ###################################################
