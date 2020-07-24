@@ -17,7 +17,7 @@ num_epochs = 500
 num_workers   = 0
 
 val_interval = 1
-save_interval = 1000
+start_interval = 10 
 unresotre_weights_dict = ["header"]
 head_only    = True
 
@@ -38,8 +38,10 @@ min_lr       = 1e-6
 #################################################
 
 
-mean        =[0.485, 0.456, 0.406]
-std         =[0.229, 0.224, 0.225]
+mean        =[0.750033, 0.811906, 0.791236]
+std         =[0.266911, 0.231149, 0.281710]
+# mean        =[0.485, 0.456, 0.406]
+# std         =[0.229, 0.224, 0.225]
 
 anchors_scales = '[2 ** 0, 2 ** (1.0 / 3.0), 2 ** (2.0 / 3.0)]'
 anchors_ratios = '[(1.0, 1.0), (1.4, 0.7), (0.7, 1.4)]'
@@ -59,7 +61,7 @@ iou_threshold = 0.2
 
 ''' eval setting'''
 ####################################################
-eval_weight_path = 'weights/kdxf/efficientdet-d0_32_8000.pth'
+eval_weight_path = 'weights/kdxf/efficientdet-d0_153_38000.pth'
 eval_nms_threshold   = 0.5
 eval_use_cuda = True
 eval_gpu = 0

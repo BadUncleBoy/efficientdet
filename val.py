@@ -48,14 +48,19 @@ def coco_eval(model):
         os.remove(results_json_path)
 
 def voc_eval(model):
-    val_data_path = config.data_path + "/" + config.dataset_name + "/val.txt"
+    val_data_path = config.data_path + "/" + config.dataset_name + "/{}.txt".format(config.val_set)
     gt_dict, img_pathes_ = parse_gt_rec(val_data_path)
     img_pathes = [os.path.join(config.data_path, config.dataset_name, each) for each in img_pathes_]
     
     results = evaluate_voc(gt_dict, img_pathes, model, input_sizes[config.compound_coef], config)
+    ars = 0
+    aps =0
+    nums = len(config.obj_list)
     for i, each in enumerate(results):
         print("class:{:15s}Precision:{:.3f}\tRecall:{:.3f}\tAP:{:.3f}".format(config.obj_list[i], each[0], each[1],each[2]))
-
+        ars += each[1]
+        aps += each[2]
+    print("AP:{:.3f}\tmAP{:.3f}".format(ars/nums, aps/nums))
 if __name__ == '__main__':
     model = EfficientDetBackbone(compound_coef=compound_coef, num_classes=num_classes,
                                      anchor_free_mode=config.anchor_free_mode,

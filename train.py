@@ -24,7 +24,7 @@ from core.loss import FocalLoss, FocalLoss_fcos
 from utils.sync_batchnorm import patch_replication_callback
 from utils.utils import replace_w_sync_bn, CustomDataParallel, init_weights
 import config
-os.environ["CUDA_VISIBLE_DEVICES"] = '3,4,5,7'
+os.environ["CUDA_VISIBLE_DEVICES"] = '4,5,6,7'
 class ModelWithLoss(nn.Module):
     def __init__(self, model, debug=False):
         super().__init__()
@@ -160,8 +160,6 @@ def train():
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=config.patience, verbose=True, factor=config.factor, min_lr=config.min_lr)
 
     epoch = 0
-    best_loss = 1e5
-    best_epoch = 0
     step = max(0, last_step)
     model.train()
 
@@ -174,15 +172,10 @@ def train():
                 continue
 
             epoch_loss = []
-            progress_bar = tqdm(training_generator)
-            for iter, data in enumerate(progress_bar):
-                if iter < step - last_epoch * num_iter_per_epoch:
-                    progress_bar.update()
-                    continue
+            for iter, data in enumerate(training_generator):
                 try:
                     imgs = data['img']
                     annot = data['annot']
-                    # print(annot)
 
                     if config.num_gpus == 1:
                         # if only one gpu, just send it to cuda:0
@@ -205,8 +198,7 @@ def train():
 
                     epoch_loss.append(float(loss))
 
-                    progress_bar.set_description(
-                        'Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
+                    print('Step: {}. Epoch: {}/{}. Iteration: {}/{}. Cls loss: {:.5f}. Reg loss: {:.5f}. Total loss: {:.5f}'.format(
                             step, epoch, config.num_epochs, iter + 1, num_iter_per_epoch, cls_loss.item(),
                             reg_loss.item(), loss.item()))
                     writer.add_scalars('Loss', {'train':loss}, step)
@@ -219,16 +211,13 @@ def train():
 
                     step += 1
 
-                    if step % config.save_interval == 0 and step > 0:
-                        save_checkpoint(model, 'efficientdet-d{0}_{1}_{2}.pth'.format(config.compound_coef,epoch,step))
-
                 except Exception as e:
                     print('[Error]', traceback.format_exc())
                     print(e)
                     continue
             scheduler.step(np.mean(epoch_loss))
 
-            if epoch % config.val_interval == 0:
+            if epoch % config.val_interval == 0 and epoch > config.start_interval:
                 
                 model.eval()
                 loss_regression_ls = []
@@ -264,18 +253,10 @@ def train():
                 writer.add_scalars('Regression_loss', {'val':reg_loss}, step)
                 writer.add_scalars('Classfication_loss', {'val':cls_loss}, step)
 
-                if loss + config.es_min_delta < best_loss:
-                    best_loss = loss
-                    best_epoch = epoch
-
-                    save_checkpoint(model, 'efficientdet-d{0}_{1}_{2}_best_loss.pth'.format(config.compound_coef, epoch, step))
+                save_checkpoint(model, 'efficientdet-d{0}_{1}_{2}.pth'.format(config.compound_coef, epoch, step))
 
                 model.train()
                            
-                # Early stopping
-                if epoch - best_epoch > config.es_patience > 0:
-                    print('[Info] Stop training at epoch {}. The lowest loss achieved is {}'.format(epoch, best_loss))
-                    break
     except KeyboardInterrupt:
         save_checkpoint(model, 'efficientdet-d{0}_{1}_{2}.pth'.format(config.compound_coef, epoch, step))
         writer.close()
